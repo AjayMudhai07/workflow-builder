@@ -1,0 +1,292 @@
+{
+  "version": "1.0.0",
+  "nodes": [
+    {
+      "id": "csv_upload",
+      "name": "CSV File Upload",
+      "description": "Upload and parse CSV files for data processing",
+      "category": "input",
+      "nodeType": "fileUploadNode",
+      "icon": "IconFileTypeCsv",
+      "inputTypes": ["file"],
+      "outputTypes": ["dataset"],
+      "config": {
+        "acceptedFileTypes": [".csv", ".txt"],
+        "maxFileSize": "10MB",
+        "delimiter": ",",
+        "hasHeader": true
+      },
+      "timeout": 30
+    },
+    {
+      "id": "json_upload",
+      "name": "JSON File Upload",
+      "description": "Upload and parse JSON files for data processing",
+      "category": "input",
+      "nodeType": "jsonUploadNode",
+      "icon": "IconFileTypeJson",
+      "inputTypes": ["file"],
+      "outputTypes": ["dataset", "json"],
+      "config": {
+        "acceptedFileTypes": [".json"],
+        "maxFileSize": "10MB",
+        "validateSchema": false
+      },
+      "timeout": 30
+    },
+    {
+      "id": "data_filter",
+      "name": "Data Filter",
+      "description": "Filter dataset rows based on column conditions",
+      "category": "transform",
+      "nodeType": "filterNode",
+      "icon": "IconFilter",
+      "inputTypes": ["dataset"],
+      "outputTypes": ["dataset"],
+      "config": {
+        "supportedOperations": ["equals", "not_equals", "contains", "not_contains", "greater_than", "less_than"],
+        "caseSensitive": false,
+        "allowEmptyResults": true
+      },
+      "timeout": 60
+    },
+    {
+      "id": "data_sort",
+      "name": "Data Sort",
+      "description": "Sort dataset rows based on column values",
+      "category": "transform",
+      "nodeType": "sortNode",
+      "icon": "IconArrowsSort",
+      "inputTypes": ["dataset"],
+      "outputTypes": ["dataset"],
+      "config": {
+        "supportedOrders": ["asc", "desc"],
+        "dataTypes": ["string", "number", "date"],
+        "nullsLast": true
+      },
+      "timeout": 60
+    },
+    {
+      "id": "data_aggregate",
+      "name": "Data Aggregation",
+      "description": "Aggregate data using various statistical functions",
+      "category": "transform",
+      "nodeType": "aggregateNode",
+      "icon": "IconSum",
+      "inputTypes": ["dataset"],
+      "outputTypes": ["dataset"],
+      "config": {
+        "supportedFunctions": ["sum", "avg", "count", "min", "max", "median", "std", "var"],
+        "groupByColumns": [],
+        "includeNulls": false
+      },
+      "timeout": 120
+    },
+    {
+      "id": "data_join",
+      "name": "Data Join",
+      "description": "Join two datasets based on common columns",
+      "category": "transform",
+      "nodeType": "joinNode",
+      "icon": "IconGitMerge",
+      "inputTypes": ["dataset", "dataset"],
+      "outputTypes": ["dataset"],
+      "config": {
+        "joinTypes": ["inner", "left", "right", "outer"],
+        "defaultJoinType": "inner",
+        "caseSensitive": false
+      },
+      "timeout": 180
+    },
+    {
+      "id": "api_call",
+      "name": "HTTP API Call",
+      "description": "Make HTTP requests to external APIs",
+      "category": "integration",
+      "nodeType": "apiCallNode",
+      "icon": "IconApi",
+      "inputTypes": ["dataset", "json", "text"],
+      "outputTypes": ["json", "dataset", "text"],
+      "config": {
+        "supportedMethods": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+        "defaultMethod": "GET",
+        "timeout": 30000,
+        "retries": 3,
+        "headers": {
+          "Content-Type": "application/json",
+          "User-Agent": "WorkflowBuilder/1.0"
+        }
+      },
+      "retryPolicy": {
+        "max_retries": 3,
+        "backoff_strategy": "exponential",
+        "initial_delay": 1000,
+        "max_delay": 30000,
+        "backoff_multiplier": 2,
+        "retry_on_errors": ["ConnectionError", "TimeoutError", "ServiceUnavailableError", "RateLimitError"],
+        "no_retry_on_errors": ["AuthenticationError", "ValidationError", "BadRequestError"]
+      },
+      "timeout": 60
+    },
+    {
+      "id": "database_query",
+      "name": "Database Query",
+      "description": "Execute SQL queries against databases",
+      "category": "integration",
+      "nodeType": "databaseNode",
+      "icon": "IconDatabase",
+      "inputTypes": ["text", "dataset"],
+      "outputTypes": ["dataset"],
+      "config": {
+        "supportedDatabases": ["postgresql", "mysql", "sqlite", "mongodb"],
+        "connectionPoolSize": 10,
+        "queryTimeout": 30000,
+        "maxRows": 10000
+      },
+      "retryPolicy": {
+        "max_retries": 2,
+        "backoff_strategy": "linear",
+        "initial_delay": 2000,
+        "max_delay": 10000
+      },
+      "timeout": 120
+    },
+    {
+      "id": "text_processing",
+      "name": "Text Processing",
+      "description": "Process and transform text data",
+      "category": "transform",
+      "nodeType": "textProcessingNode",
+      "icon": "IconFileText",
+      "inputTypes": ["text", "dataset"],
+      "outputTypes": ["text", "dataset"],
+      "config": {
+        "operations": ["lowercase", "uppercase", "trim", "replace", "extract", "split"],
+        "encoding": "utf-8",
+        "preserveNewlines": true,
+        "regex": {
+          "enabled": false,
+          "flags": ["i", "g", "m"]
+        }
+      },
+      "timeout": 60
+    },
+    {
+      "id": "email_sender",
+      "name": "Email Sender",
+      "description": "Send emails with processed data",
+      "category": "output",
+      "nodeType": "emailNode",
+      "icon": "IconMail",
+      "inputTypes": ["text", "dataset", "file"],
+      "outputTypes": ["text"],
+      "config": {
+        "smtpSettings": {
+          "host": "",
+          "port": 587,
+          "secure": false,
+          "auth": {
+            "user": "",
+            "pass": ""
+          }
+        },
+        "attachmentTypes": [".csv", ".json", ".txt", ".pdf"],
+        "maxAttachmentSize": "25MB"
+      },
+      "timeout": 30
+    },
+    {
+      "id": "csv_export",
+      "name": "CSV Export",
+      "description": "Export processed data as CSV file",
+      "category": "output",
+      "nodeType": "csvExportNode",
+      "icon": "IconDownload",
+      "inputTypes": ["dataset"],
+      "outputTypes": ["file"],
+      "config": {
+        "defaultFileName": "export.csv",
+        "includeHeaders": true,
+        "delimiter": ",",
+        "encoding": "utf-8",
+        "dateFormat": "YYYY-MM-DD",
+        "nullValue": ""
+      },
+      "timeout": 60
+    },
+    {
+      "id": "json_export",
+      "name": "JSON Export",
+      "description": "Export processed data as JSON file",
+      "category": "output",
+      "nodeType": "jsonExportNode",
+      "icon": "IconFileCode",
+      "inputTypes": ["dataset", "json"],
+      "outputTypes": ["file"],
+      "config": {
+        "defaultFileName": "export.json",
+        "prettyPrint": true,
+        "encoding": "utf-8",
+        "arrayWrapper": false
+      },
+      "timeout": 60
+    },
+    {
+      "id": "webhook_sender",
+      "name": "Webhook Sender",
+      "description": "Send data to webhook endpoints",
+      "category": "output",
+      "nodeType": "webhookNode",
+      "icon": "IconWebhook",
+      "inputTypes": ["json", "dataset", "text"],
+      "outputTypes": ["text", "json"],
+      "config": {
+        "method": "POST",
+        "contentType": "application/json",
+        "timeout": 10000,
+        "headers": {},
+        "retryOnFailure": true
+      },
+      "retryPolicy": {
+        "max_retries": 3,
+        "backoff_strategy": "exponential",
+        "initial_delay": 1000,
+        "max_delay": 10000
+      },
+      "timeout": 30
+    },
+    {
+      "id": "conditional_branch",
+      "name": "Conditional Branch",
+      "description": "Route data based on conditions",
+      "category": "control",
+      "nodeType": "conditionalNode",
+      "icon": "IconGitBranch",
+      "inputTypes": ["dataset", "json", "text"],
+      "outputTypes": ["dataset", "json", "text"],
+      "config": {
+        "conditions": ["equals", "not_equals", "greater_than", "less_than", "contains", "regex"],
+        "logicalOperators": ["AND", "OR", "NOT"],
+        "defaultBranch": "true"
+      },
+      "timeout": 30
+    },
+    {
+      "id": "data_validator",
+      "name": "Data Validator",
+      "description": "Validate data against predefined rules",
+      "category": "transform",
+      "nodeType": "validatorNode",
+      "icon": "IconShieldCheck",
+      "inputTypes": ["dataset", "json"],
+      "outputTypes": ["dataset", "json"],
+      "config": {
+        "validationRules": ["required", "type", "range", "pattern", "custom"],
+        "strictMode": false,
+        "errorHandling": ["ignore", "flag", "remove", "stop"],
+        "outputInvalidRecords": true
+      },
+      "timeout": 90
+    }
+  ]
+}

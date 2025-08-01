@@ -1,5 +1,8 @@
 import { useAppDispatch, useAppSelector } from './hook';
 import { workflowStore } from './workflowStore';
+// Add to existing exports
+export { nodeLoaderService } from './nodeLoaderService';
+
 import {
     createWorkflow,
     resetCurrentWorkflow,

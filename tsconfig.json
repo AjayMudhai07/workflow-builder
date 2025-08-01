@@ -5,35 +5,31 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@App/*": ["src/app/*"],
-      "@Assets/*": ["src/assets/*"],
-      "@Components": ["src/components/"],
-      "@Constants": ["src/constants/"],
-      "@Hooks": ["src/hooks/"],
-      "@Layout": ["src/layout/"],
-      "@Routes": ["src/routes/"],
-      "@Services": ["src/services/"],
-      "@Utils": ["src/utils/"],
-      "@View": ["src/view/"],
-    },
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+      "@/*": ["./src/*"],
+      "@App/*": ["./src/app/*"],
+      "@Assets/*": ["./src/assets/*"],
+      "@Components": ["./src/components"],
+      "@Constants": ["./src/constants"],
+      "@Hooks": ["./src/hooks"],
+      "@Layout": ["./src/layout"],
+      "@Routes": ["./src/routes"],
+      "@Services": ["./src/services"],
+      "@Utils": ["./src/utils"],
+      "@View": ["./src/view"]
+    }
   },
-  "include": ["src", "src/*.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

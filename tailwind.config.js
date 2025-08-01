@@ -7,18 +7,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "#1B192B",
-        text: "#f8f8f2",
-        border: "#333154",
-        card: "#333154",
-        previewBackground: "#4caf5030",
-        previewBorder: "#4caf50",
-        exportButton: "#333154",
-        exportButtonMenu: "#2d3748",
-        exportButtonMenuHover: "#ffffff14",
-      },
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        card: 'var(--card)',
+        border: 'var(--border)',
+        header: 'var(--header)',
+        previewBackground: 'var(--preview-background)',
+        previewBorder: 'var(--preview-border)',
+        exportButton: 'var(--export-button)',
+        exportButtonMenu: 'var(--export-button-menu)',
+        exportButtonMenuHover: 'var(--export-button-menu-hover)',
+      }
     },
   },
   plugins: [],
 }
-

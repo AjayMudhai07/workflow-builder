@@ -1,6 +1,7 @@
 import { FilterDataProps, GetNewNodeProps, SortDataProps } from "./types";
 import { EMPTY_STring, NOT_EQUAL, TAB_NEW_LINE, ZERO, DEFAULT_WORKFLOW_NAME, COMA, EQUAL, INCLUDES, NEGATIVE_ONE, NOT_INCLUDES, NO_PREVIEW, ORDER_DESC } from "@Constants";
-
+// Add to existing exports
+export { nodeFactory, getNewNode } from './nodeFactory';
 export const DND_DATA_TRANSFER = "application/reactflow";
 
 export const newWorkflow = {
